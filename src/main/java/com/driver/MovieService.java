@@ -51,4 +51,9 @@ public class MovieService {
         List<String> movieList = movieRepository.findAllMoviesInDb();
         return movieList;
     }
+
+    public String deleteAllDirectors() {
+        String result = movieRepository.deleteAllDirectors();
+        return result;
+    }
 }

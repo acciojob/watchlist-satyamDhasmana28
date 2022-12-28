@@ -71,4 +71,9 @@ public class MovieRepository {
         }
         return result;
     }
+
+    public String deleteAllDirectors() {
+        directorMovieDb.clear();
+        return "success";
+    }
 }
