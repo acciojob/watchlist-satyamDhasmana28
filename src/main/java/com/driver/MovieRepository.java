@@ -9,24 +9,23 @@ import java.util.Objects;
 
 @Repository
 public class MovieRepository {
-    static int movieNumber=0;
-    static  int directorNumber=0;
-    HashMap<Integer,Movie> movieDb = new HashMap<>();
-    HashMap<Integer,Director> directorDb = new HashMap<>();
+
+    HashMap<String,Movie> movieDb = new HashMap<>();
+    HashMap<String,Director> directorDb = new HashMap<>();
     HashMap<String, List<String>> directorMovieDb = new HashMap<>();
 
     public String addMovieToDb(Movie movie){
-        movieDb.put(MovieRepository.movieNumber++,movie);
+        movieDb.put(movie.getName(),movie);
         return "success";
     }
 
     public String addDirector(Director director){
-        directorDb.put(MovieRepository.directorNumber++,director);
+        directorDb.put(director.getName(),director);
         return "success";
     }
 
     public Movie getMovieByName(String name) {
-        for(int key : movieDb.keySet()){
+        for(String key : movieDb.keySet()){
             Movie movie = movieDb.get(key);
             if(Objects.equals(movie.getName(), name)){
                 return movie;
@@ -36,7 +35,7 @@ public class MovieRepository {
     }
 
     public Director getDirectorByName(String name) {
-     for(int key : directorDb.keySet()){
+     for(String key : directorDb.keySet()){
          Director director = directorDb.get(key);
          if(Objects.equals(director.getName(), name)){
              return  director;
@@ -59,20 +58,34 @@ public class MovieRepository {
     }
 
     public String deleteDirectorByNameFromDb(String directorName) {
+        List<String> movieList = directorMovieDb.get(directorName);
+        for(String movie : movieList){
+            if(movieDb.containsKey(movie)){
+                movieDb.remove(movie);
+            }
+        }
         directorMovieDb.remove(directorName);
         return "success";
     }
 
     public List<String> findAllMoviesInDb() {
         List<String> result = new ArrayList<>();
-        for(int key : movieDb.keySet()){
-            String movieName = movieDb.get(key).getName();
+        for(String movieName : movieDb.keySet()){
             result.add(movieName);
         }
         return result;
     }
 
     public String deleteAllDirectors() {
+        for(String director : directorMovieDb.keySet()){
+//            getting movie list from directorMovieDb
+            List<String> movieList = directorMovieDb.get(director);
+            for(String movie : movieList){
+                if(movieDb.containsKey(movie)){
+                    movieDb.remove(movie);
+                }
+            }
+        }
         directorMovieDb.clear();
         return "success";
     }
