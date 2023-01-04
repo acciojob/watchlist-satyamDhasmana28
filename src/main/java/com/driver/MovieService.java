@@ -56,4 +56,9 @@ public class MovieService {
         String result = movieRepository.deleteAllDirectors();
         return result;
     }
+
+    public String getDirectorByMovie(String movieName) {
+        String result = movieRepository.getDirectorByMovieFromDb(movieName);
+        return result;
+    }
 }

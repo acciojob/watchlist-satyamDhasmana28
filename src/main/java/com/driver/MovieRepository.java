@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class MovieRepository {
+public class MovieRepository{
 
     HashMap<String,Movie> movieDb = new HashMap<>();
     HashMap<String,Director> directorDb = new HashMap<>();
     HashMap<String, List<String>> directorMovieDb = new HashMap<>();
-
+//    o(1) to find director by movie name;
+    HashMap<String,String> directorMoviePairDb = new HashMap<>();
     public String addMovieToDb(Movie movie){
         movieDb.put(movie.getName(),movie);
         return "success";
@@ -49,6 +50,7 @@ public class MovieRepository {
         List<String> movieList = directorMovieDb.getOrDefault(directorName,new ArrayList<>());
         movieList.add(movieName);
         directorMovieDb.put(directorName,movieList);
+        directorMoviePairDb.put(movieName,directorName);
         return "Success";
     }
 
@@ -76,6 +78,19 @@ public class MovieRepository {
         return result;
     }
 
+//    public String deleteAllDirectors() {
+//        for(String director : directorMovieDb.keySet() ){
+//            List<String> movieList = directorMovieDb.get(director);
+//            for(String movie : movieList){
+//                if(movieDb.containsKey(movie)){
+//                    movieDb.remove(movie);
+//                }
+//            }
+//        }
+//        directorMovieDb.clear();
+//        return "success";
+//    }
+
     public String deleteAllDirectors() {
         for(String director : directorMovieDb.keySet()){
 //            getting movie list from directorMovieDb
@@ -88,5 +103,9 @@ public class MovieRepository {
         }
         directorMovieDb.clear();
         return "success";
+    }
+
+    public String getDirectorByMovieFromDb(String movieName) {
+        return directorMoviePairDb.get(movieName);
     }
 }
